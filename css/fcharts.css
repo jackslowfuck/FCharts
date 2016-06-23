@@ -1,0 +1,650 @@
+@charset "UTF-8";
+svg * {
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+svg *::-moz-selection {
+  background: transparent;
+}
+svg *::selection {
+  background: transparent;
+}
+
+/**
+ *  selection在Firefox里，背景变成透明，但是文本颜色也变成了黑色，不是设置的颜色，所以用user-select禁止选中文本 
+ *  ie9及以下不支持user-select，用selection处理
+ *  以上处理用以让用户无法选中SVG内文本或感觉没选中的效果，以达到视觉效果的美观
+ */
+/** 
+ *  给flag加hover动画，ie9不支持css3动画，用半透明表示兼容
+ */
+/*mixin autoPrefix( name, set, after ){
+    if( after ){
+        
+    }else{
+        -moz-name: set;
+        -webkit-name: set;
+        name: set;
+    }
+}*/
+.capi-market-red circle:hover {
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.capi-dynamic,
+.capi-flag path:hover,
+.capi-flag circle:hover {
+  opacity: .5;
+  -webkit-animation: 1.4s fade ease-in-out infinite;
+  animation: 1.4s fade ease-in-out infinite;
+}
+@-webkit-keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+/**
+ *  设置默认样式保持API独立运行
+ *  设置box-sizing保持API的独立运行 
+ */
+/*公共部分*/
+.capi-ev-timeInfo:after,
+.capi-evInfo:after,
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+p {
+  margin: 0;
+}
+
+.capi-transition {
+  -webkit-transition: .2s ease-out;
+  transition: .2s ease-out;
+}
+
+.capi-ev-timeInfo,
+.capi-ev-timeInfo *,
+.capi-ev-timeIcon,
+.capi-ev-timeIcon *,
+.capi-notice,
+.capi-notice *,
+.capi-evIcon,
+.capi-evInfo,
+.capi-evInfo *,
+.capi-timeChart,
+.capi-timeChart *,
+.capi-trade,
+.capi-trade * {
+  box-sizing: border-box;
+}
+
+.capi-ev-timeInfo,
+.capi-notice,
+.capi-evInfo,
+.capi-timeChart,
+.capi-trade {
+  font: 12px \5FAE\8F6F\96C5\9ED1;
+  width: 340px;
+  background-color: #fff;
+  padding: 8px 24px 8px 10px;
+  border: 2px solid #173070;
+  position: absolute;
+  cursor: move;
+}
+
+.capi-close {
+  width: 10px;
+  height: 10px;
+  right: 8px;
+  top: 8px;
+  cursor: pointer;
+  position: absolute;
+  z-index: 2;
+}
+
+.capi-close:before,
+.capi-close:after {
+  content: "";
+  display: block;
+  width: 14px;
+  height: 2px;
+  background-color: #C3C3C3;
+  position: absolute;
+  top: 0;
+  border-radius: 2px;
+}
+
+.capi-close:before {
+  left: 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+  -webkit-transform-origin: left top;
+  -ms-transform-origin: left top;
+      transform-origin: left top;
+}
+
+.capi-close:after {
+  right: 1px;
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+  -webkit-transform-origin: right top;
+  -ms-transform-origin: right top;
+      transform-origin: right top;
+}
+
+.capi-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #173070;
+}
+
+.capi-loading {
+  width: calc(100% + 14px);
+  padding: 20px 0;
+  text-align: center;
+}
+
+.capi-loading img {
+  width: auto !important;
+}
+
+.capi-loading-svg {
+  height: 100%;
+  text-align: center;
+}
+
+.capi-loading-svg * {
+  vertical-align: middle;
+}
+
+.capi-loading-svg i {
+  display: inline-block;
+  height: 100%;
+}
+
+.capi-loading-svg-tran {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.6);
+  z-index: 999;
+  padding-bottom: 24px;
+}
+
+/*公共评论*/
+[class^="capi"] textarea {
+  resize: vertical;
+  width: 100% !important;
+  height: 64px;
+  margin: 0 !important;
+  padding: 4px;
+}
+
+.capi-comment .comment-list textarea {
+  height: 28px;
+}
+
+.capi-ev-timeInfo,
+.capi-evInfo {
+  width: 540px;
+}
+
+.capi-con-wrap {
+  width: 302px;
+  height: 320px;
+  padding-right: 20px;
+}
+
+.capi-con-wrap .sina,
+.capi-con-wrap .weixin {
+  display: inline-block;
+  background: url(http://www.yuncaijing.com/templates/default/assets/image/charts/capi-share.png) 0 0 no-repeat;
+  position: relative;
+  top: 1px;
+}
+
+.capi-con-wrap .sina {
+  width: 13px;
+  height: 11px;
+  margin-left: 8px;
+}
+
+.capi-con-wrap .weixin {
+  width: 15px;
+  height: 11px;
+  background-position: -13px 0;
+  margin-left: 4px;
+}
+
+.capi-con-wrap .weixin img {
+  position: absolute;
+  right: 0;
+  top: 18px;
+  border: 1px solid #1CC224;
+  box-shadow: 0 0 4px #1CC224;
+  display: none;
+}
+
+.capi-comment {
+  width: 200px;
+  height: 320px;
+  padding: 0 4px 0 8px;
+  border-left: 1px solid #ccc;
+  position: relative;
+}
+
+.capi-comment * {
+  font-size: 12px;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.capi-comment .btn-default {
+  line-height: 1;
+  padding: 4px 6px;
+}
+
+.capi-comment .comment-submit {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: 207px;
+  height: 120px;
+  background-color: #fff;
+}
+
+.capi-comment .comment-submit p {
+  margin-bottom: 5px;
+}
+
+.capi-comment .comment-submit .align {
+  text-align: right;
+}
+
+.capi-comment .comment-submit span {
+  margin-top: 6px;
+}
+
+.capi-comment .comment-list {
+  width: 207px;
+  margin-top: 120px;
+  overflow: auto;
+  height: calc(100% - 120px);
+}
+
+.capi-comment .comment-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.capi-comment .comment-list::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.capi-comment .comment-list::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #CECECE;
+}
+
+.capi-comment .lightgray-bg-color {
+  background-color: #EFEFEF;
+}
+
+.capi-comment .reply-time {
+  margin-top: .2em;
+}
+
+.capi-comment .reply-time time {
+  color: #A8A8A8;
+}
+
+.capi-comment .reply-time span {
+  color: #666;
+  cursor: pointer;
+}
+
+.capi-comment .reply-time span:hover {
+  color: #CC0000;
+}
+
+.capi-comment .comment-list li {
+  border-bottom: 1px dashed #ccc;
+  margin-top: 8px;
+  padding-bottom: 4px;
+}
+
+.capi-comment .user-sec li {
+  margin-top: 4px;
+  padding-top: 4px;
+}
+
+.capi-comment .comment-list li:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.capi-comment .comment-list li:last-of-type {
+  border-bottom: none;
+}
+
+.capi-comment .content p {
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.capi-comment .reply-user {
+  padding: 6px;
+  margin-top: 2px;
+  display: none;
+}
+
+.capi-comment .reply-user textarea + div {
+  text-align: right;
+  margin: 6px 0;
+}
+
+.capi-comment .user-sec li {
+  padding: 10px 0 0;
+}
+
+.capi-comment .user-sec li img {
+  width: 45px;
+  height: 45px;
+}
+
+.capi-comment .user-sec .content {
+  padding-left: 0;
+  margin-bottom: 6px;
+}
+
+.capi-comment .user-sec .reply-user {
+  padding: 0;
+}
+
+/*内部交易，大宗交易*/
+.capi-trade {
+  width: auto;
+  min-width: 246px;
+}
+
+.capi-notice .content,
+.capi-trade .content {
+  margin-bottom: 20px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.capi-notice .content:last-of-type,
+.capi-trade .content:last-of-type {
+  margin-bottom: 0;
+}
+
+/*点击K线弹出分时图*/
+.capi-timeChart {
+  -moz-resize: both;
+  -webkit-resize: both;
+  resize: both;
+  overflow: hidden;
+}
+
+.capi-timeChart .capi-title time {
+  float: right;
+  color: #777;
+  font-weight: normal;
+}
+
+.capi-timeChart img {
+  width: 100%;
+}
+
+/*事件压缩展示*/
+.capi-ev-timeInfo .time,
+.capi-evInfo .time {
+  color: #777;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.capi-ev-timeInfo .time time,
+.capi-evInfo .time time {
+  margin-right: 1em;
+}
+
+.capi-ev-timeInfo .content,
+.capi-evInfo .content {
+  line-height: 1.8;
+}
+
+.capi-ev-timeInfo footer,
+.capi-evInfo footer {
+  line-height: 1;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.capi-pos-footer {
+  position: absolute;
+  bottom: 8px;
+}
+
+/*事件图标表示*/
+.capi-ev-timeIcon,
+.capi-evIcon {
+  font: bold 12px/1.4 arial;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  color: #666;
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+}
+
+.capi-evActive,
+.capi-ev-timeIcon:hover,
+.capi-evIcon:hover {
+  border-color: #173070;
+  color: #173070;
+  z-index: 9999 !important;
+}
+
+/*公告*/
+.capi-notice .content header {
+  color: #173070;
+  font-weight: bold;
+}
+
+/*龙虎榜*/
+.capi-win-lhb {
+  width: 548px;
+}
+
+.capi-lhbang {
+  width: 520px;
+}
+
+.capi-lhbang .header span {
+  width: 30%;
+  float: left;
+}
+
+.capi-lhbang .sub-title {
+  margin: 12px 0 2px 4px;
+  font-size: 13px;
+}
+
+.capi-lhbang .list li {
+  padding: .5em 0 .5em 4px;
+  text-align: center;
+}
+
+.capi-lhbang .list li:nth-of-type(2n) {
+  background-color: #ececec;
+}
+
+.capi-lhbang .list:last-child li:last-of-type {
+  border-bottom: none;
+}
+
+.capi-lhbang .list li:first-of-type {
+  font-weight: normal;
+}
+
+.capi-lhbang .list span {
+  float: left;
+  width: 18%;
+  word-break: break-all;
+  height: 22px;
+  line-height: 22px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.capi-lhbang .list span:nth-of-type(4) {
+  width: 20%;
+}
+
+.capi-lhbang .list span:first-of-type {
+  width: 26%;
+}
+
+.capi-lhbang .bold-title span {
+  font-weight: bold !important;
+}
+
+.capi-lhbang .sfl span:first-of-type {
+  width: 24%;
+}
+
+.capi-lhbang .sfl span:nth-last-of-type(2),
+.capi-lhbang .sfl span:last-of-type {
+  width: 10%;
+}
+
+.capi-lhbang .malign,
+.capi-lhbang mark {
+  vertical-align: middle;
+}
+
+.capi-lhbang mark {
+  margin-right: 2px;
+}
+
+.capi-lhbang .full-star,
+.capi-lhbang .halffull-star,
+.capi-lhbang .hollow-star {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+.capi-lhbang .halffull-star {
+  background-position: -12px 0;
+}
+
+.capi-lhbang .hollow-star {
+  background-position: -24px 0;
+}
+
+/*需求更改 - 时间压缩内容的评论*/
+.capi-ev-timeInfo,
+.capi-evInfo{
+	width: 430px;
+}
+.capi-ev-timeInfo .time,
+.capi-evInfo .time{
+	position: relative;
+}
+.capi-comment{
+	height: 100%;
+}
+.capi-ev-timeInfo .capi-con-wrap,
+.capi-evInfo .capi-con-wrap{
+	width: 416px;
+}
+
+.capi-gly-com{
+	height: 50px;
+	line-height: 50px;
+	margin-top: -25px;
+	background-color: #DFDFDF;
+	color: #F3F3F3;
+	cursor: pointer;
+  position: absolute;
+  z-index: 99;
+	right: 0;
+	top: 50%;
+}
+.capi-gly-com:after,
+.capi-gly-com:before{
+	content: "";
+	position: absolute;
+	left: 0;
+	border: 5px solid #DFDFDF;
+	border-left-color: transparent !important;
+}
+
+.capi-gly-com:before{
+	top: -10px;
+	border-top-color: transparent !important;
+}
+
+.capi-gly-com:after{
+	bottom: -10px;
+	border-bottom-color: transparent !important;
+}
+
+.capi-gly-com:hover{
+	background-color: #173070;
+}
+
+.capi-gly-com:hover:after,
+.capi-gly-com:hover:before{
+	border-color: #173070;
+}
+
+.capi-ev-timeIcon:hover,
+.capi-ev-timeIcon{
+	border-color: #c00;
+	color: #c00;
+}
+
+/*# sourceMappingURL=ycj_charts.css.map */
